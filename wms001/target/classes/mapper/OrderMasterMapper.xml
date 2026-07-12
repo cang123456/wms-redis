@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.wms001.mapper.OrderMasterMapper">
+    <!-- 1. 支付订单 → 待支付 → 已支付 -->
+    <update id="payed">
+        update order_master
+        set order_status = 2
+        where order_no = #{orderNo}
+    </update>
+
+    <!-- 2. 取消订单 → 已取消 -->
+    <update id="cancelOrder">
+        update order_master
+        set order_status = 5
+        where order_no = #{orderNo}
+    </update>
+
+    <!-- 3. 出库订单 → 已出库 -->
+    <update id="outStock">
+        update order_master
+        set order_status = 3
+        where order_no = #{orderNo}
+    </update>
+
+    <!-- 4. 完成订单 → 已完成 -->
+    <update id="finishOrder">
+        update order_master
+        set order_status = 4
+        where order_no = #{orderNo}
+    </update>
+
+    <!-- 5. 重置为待支付（比如支付失败/重新支付） -->
+    <update id="resetToUnpay">
+        update order_master
+        set order_status = 1
+        where order_no = #{orderNo}
+    </update>
+
+    <select id="pageCC" resultType="com.example.wms001.entity.OrderMaster">
+        SELECT * FROM order_master
+        ${ew.customSqlSegment}
+    </select>
+</mapper>

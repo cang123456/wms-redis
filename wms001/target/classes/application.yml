@@ -1,0 +1,54 @@
+server:
+  port: 8090
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    banner: false  # 关闭 MyBatis-Plus 启动 Logo
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/wms001
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+  servlet:
+    multipart:
+      max-file-size: 10MB    # 单个文件的最大大小
+      max-request-size: 10MB # 单次请求的总文件大小上限
+# JWT 核心配置（必须添加）
+jwt:
+  # 密钥（必须是32位以上字符串，可随便写，生产环境要随机生成）
+  secret: aB3k9sT2pR7xZ8qL5dG1jH6mN4cF0vS2eW
+  # 过期时间（秒）：2小时 = 7200秒
+  expire-time: 7200
+  header: token
+## ??MyBatis-Plus?????? ??sql
+#mybatis-plus:
+#  configuration:
+#    map-underscore-to-camel-case: true # ?????????role_id ? roleId?
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # ??SQL????????
+local_things:
+  uploadDir: D:\project\wms\web002-main\note_img
+
+knife4j:
+  enable: true
+  # 文档标题
+  title: WMS 系统接口文档
+  # 文档描述
+  description: 仓库管理系统 API 文档
+  # 版本
+  version: 1.0.0
+  # 联系人
+  contact:
+    name: 开发团队
+    email: dev@example.com
+
+
+# 图片上传配置
+upload:
+  goods:
+    # 服务器本地存储路径（改成你自己的）
+#    base-path: /data/web002/upload/goods/
+    base-path: D:/0/upload/goods/
+    # 访问前缀，用来生成URL
+    access-prefix: /upload/goods/
