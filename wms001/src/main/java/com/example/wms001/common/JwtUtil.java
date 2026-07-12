@@ -70,4 +70,22 @@ public class JwtUtil {
             return false;
         }
     }
+
+    /**
+     * 获取 Token 剩余有效时间（秒）
+     * <p>
+     * 用于将失效 Token 加入 Redis 黑名单时，设置 TTL 与 Token 自然过期时间一致。
+     *
+     * @param token JWT Token
+     * @return 剩余有效秒数；Token 已过期或无效时返回 0
+     */
+    public long getTokenRemainingSeconds(String token) {
+        try {
+            Date expiration = parseToken(token).getExpiration();
+            long remaining = (expiration.getTime() - System.currentTimeMillis()) / 1000;
+            return Math.max(remaining, 0);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
 }

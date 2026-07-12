@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.wms001.VO.UserVO;
+import com.example.wms001.common.BaseContext;
 import com.example.wms001.common.JwtUtil;
 import com.example.wms001.common.QueryQageParam;
 import com.example.wms001.common.Result;
@@ -59,6 +60,12 @@ public class UserController {
     private IMenuService menuService;
     @Autowired
     private  com.example.wms001.common.JwtUtil jwtUtil;
+
+    @Autowired
+    private com.example.wms001.common.TokenBlacklistService tokenBlacklistService;
+
+    @Value("${jwt.header}")
+    private String tokenHeader;
     @GetMapping("/list")
     public List<User> list() {
         log.info("list");
@@ -202,6 +209,23 @@ public class UserController {
             return Result.suc("注册成功");
         }
         return Result.fail();
+    }
+
+    /**
+     * 登出接口
+     * <p>
+     * 将当前 Token 加入 Redis 黑名单使其立即失效。
+     * 后续该 Token 的所有请求都会被 JwtInterceptor 拦截拒绝。
+     */
+    @PostMapping("/logout")
+    public Result logout(jakarta.servlet.http.HttpServletRequest request) {
+        String token = request.getHeader(tokenHeader);
+        if (token != null && !token.isEmpty()) {
+            tokenBlacklistService.addToBlacklist(token);
+            log.info("用户已登出，Token 已加入黑名单");
+        }
+        BaseContext.removeCurrentId();
+        return Result.suc("已登出");
     }
 
     //查询 （模糊，匹配）

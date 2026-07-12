@@ -12,6 +12,9 @@ public class JwtInterceptor implements HandlerInterceptor {
     @Autowired
     private JwtUtil jwtUtil; // 注入common包的JwtUtil
 
+    @Autowired
+    private TokenBlacklistService tokenBlacklistService; // 注入Token黑名单服务
+
     @Value("${jwt.header}")
     private String Header;
     @Override
@@ -41,6 +44,11 @@ public class JwtInterceptor implements HandlerInterceptor {
         }
 
         token = token.replace("Bearer ", "");
+
+        // 校验 Token 是否在黑名单中（登出后失效的 Token）
+        if (tokenBlacklistService.isBlacklisted(token)) {
+            throw new RuntimeException("Token已失效，请重新登录");
+        }
 
         // 验证Token
         if (!jwtUtil.validateToken(token)) {

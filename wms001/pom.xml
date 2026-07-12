@@ -140,6 +140,18 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- Spring Boot Redis -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <!-- Redis 连接池（spring-boot-starter-data-redis 默认使用 Lettuce，连接池需此依赖） -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+
     </dependencies>
 
     <!-- 构建/plugins部分 -->
