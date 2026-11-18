@@ -17,9 +17,10 @@ export default ({
     }
   },
   watch: {
-    '$store.state.menu': {
+    // https://v2.cn.vuejs.org/v2/api/#watch
+    '$store.state.menu': {  // 一个数据 data中的或者。。
       handler(val, old) {
-        if(!old && this.user && this.user.no) {
+        if(!old && this.user && this.user.no) {// old为空，本地seesion存在user和user的序号
           this.$store.commit("setMenu", val)
         }
       },

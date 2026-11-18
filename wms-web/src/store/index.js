@@ -68,7 +68,7 @@ function addNewRouter(menuList) {
     // },
 }
 
-export default new Vuex.Store({
+export default new Vuex.Store({ // https://vuex.vuejs.org/zh/guide/state.html
     state: {
         menu:[]
     },
